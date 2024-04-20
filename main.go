@@ -1,25 +1,21 @@
 package main
 
 import (
-	"fmt"
+	"github.com/setton-c/go-logger/pkg/logger"
 )
 
 func main() {
 	generator := Random_people_generator{}
 	people := generator.generate_random_people(5)
-	logr := Logger{}
+	logr := logger.Create(logger.INFO)
 
 	for i := 0; i < len(people); i++ {
-		err := logr.Log(people[i].stringify())
-		if err != nil {
-			fmt.Println("[ERROR]: ", err)
-			return
-		}
+		logr.Info(people[i].stringify())
 	}
 
 	err := logr.Log("")
 	if err != nil {
-		fmt.Println("[ERROR]:", err)
+		logr.Error(err.Error())
 		return
 	}
 
