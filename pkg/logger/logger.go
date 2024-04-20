@@ -5,15 +5,7 @@ import (
 	"fmt"
 )
 
-type Log_level int
-
-const (
-	INFO Log_level = iota
-	WARNING
-	ERROR
-)
-
-type Logger struct{
+type Logger struct {
 	log_level Log_level
 }
 
@@ -38,7 +30,7 @@ func (lgr *Logger) Info(msg string) {
 	if lgr.log_level <= INFO {
 		err := lgr.Log("[INFO] " + msg)
 		if err != nil {
-			fmt.Println("[ERROR]: ", err)
+			lgr.Error(err.Error())
 			return
 		}
 	}
