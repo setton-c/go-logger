@@ -29,20 +29,38 @@ func (lgr Logger) Logf(format_string string, args ...interface{}) {
 	fmt.Printf("["+level_str+"]: " + format_string + "\n", args...)
 }
 
-func (lgr *Logger) Info(msg string) {
+func (lgr *Logger) Info(args ...interface{}) {
 	if lgr.log_level <= INFO {
-		lgr.Log(msg)
+		lgr.Log(args...)
 	}
 }
 
-func (lgr *Logger) Warning(msg string) {
+func (lgr *Logger) Infof(format_string string, args ...interface{}) {
+	if lgr.log_level <= INFO {
+		lgr.Logf(format_string, args...)
+	}
+}
+
+func (lgr *Logger) Warning(args ...interface{}) {
 	if lgr.log_level <= WARNING {
-		lgr.Log( msg)
+		lgr.Log(args...)
 	}
 }
 
-func (lgr *Logger) Error(msg string) {
+func (lgr *Logger) Warningf(format_string string, args ...interface{}) {
+	if lgr.log_level <= WARNING {
+		lgr.Logf(format_string, args...)
+	}
+}
+
+func (lgr *Logger) Error(args ...interface{}) {
 	if lgr.log_level <= ERROR {
-		lgr.Log(msg)
+		lgr.Log(args...)
+	}
+}
+
+func (lgr *Logger) Errorf(format_string string, args ...interface{}) {
+	if lgr.log_level <= ERROR {
+		lgr.Logf(format_string, args...)
 	}
 }
