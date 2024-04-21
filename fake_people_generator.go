@@ -1,12 +1,17 @@
 package main
 
 import (
+	"errors"
 	"math/rand"
 )
 
 type Random_people_generator struct{}
 
-func (ng *Random_people_generator) generate_random_people(amount int) []Person{
+func (ng Random_people_generator) Generate_random_people(amount int) ([]Person, error){
+	if(amount <= 0)	{
+		return nil, errors.New("Amount argument cant be negative or zero")
+	}
+	
 	var possible_names = []string{"Bob", "Vakho", "Misho", "Nika", "Giorgi"}
 	var people []Person
 
@@ -23,5 +28,5 @@ func (ng *Random_people_generator) generate_random_people(amount int) []Person{
 		people = append(people, pers)
 	}
 
-	return people
+	return people, nil
 }
