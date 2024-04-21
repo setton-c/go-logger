@@ -1,19 +1,11 @@
 package logger
 
 import (
-	"errors"
 	"fmt"
+	"strings"
 )
 
-type Log_level int
-
-const (
-	INFO Log_level = iota
-	WARNING
-	ERROR
-)
-
-type Logger struct{
+type Logger struct {
 	log_level Log_level
 }
 
@@ -25,33 +17,50 @@ func (lgr *Logger) Set_log_level(log_level Log_level) {
 	lgr.log_level = log_level
 }
 
-func (lgr *Logger) Log(message string) error {
-	if len(message) == 0 {
-		return errors.New("Message is Empty")
-	}
-	fmt.Println(message)
-
-	return nil
+func (lgr Logger) Log(args ...interface{}) {
+	level_str := strings.ToUpper(lgr.log_level.String())
+	
+	fmt.Print("["+level_str+"]: ")
+	fmt.Println(args...)
 }
 
-func (lgr *Logger) Info(msg string) {
+func (lgr Logger) Logf(format_string string, args ...interface{}) {	
+	level_str := strings.ToUpper(lgr.log_level.String())
+	fmt.Printf("["+level_str+"]: " + format_string + "\n", args...)
+}
+
+func (lgr *Logger) Info(args ...interface{}) {
 	if lgr.log_level <= INFO {
-		err := lgr.Log("[INFO] " + msg)
-		if err != nil {
-			fmt.Println("[ERROR]: ", err)
-			return
-		}
+		lgr.Log(args...)
 	}
 }
 
-func (lgr *Logger) Warning(msg string) {
+func (lgr *Logger) Infof(format_string string, args ...interface{}) {
+	if lgr.log_level <= INFO {
+		lgr.Logf(format_string, args...)
+	}
+}
+
+func (lgr *Logger) Warning(args ...interface{}) {
 	if lgr.log_level <= WARNING {
-		lgr.Log("[WARNING] " + msg)
+		lgr.Log(args...)
 	}
 }
 
-func (lgr *Logger) Error(msg string) {
+func (lgr *Logger) Warningf(format_string string, args ...interface{}) {
+	if lgr.log_level <= WARNING {
+		lgr.Logf(format_string, args...)
+	}
+}
+
+func (lgr *Logger) Error(args ...interface{}) {
 	if lgr.log_level <= ERROR {
-		lgr.Log("[ERROR] " + msg)
+		lgr.Log(args...)
+	}
+}
+
+func (lgr *Logger) Errorf(format_string string, args ...interface{}) {
+	if lgr.log_level <= ERROR {
+		lgr.Logf(format_string, args...)
 	}
 }
